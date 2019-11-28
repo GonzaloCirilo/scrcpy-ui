@@ -1,2 +1,6 @@
 # scrcpy-ui
-A Windows-based user interfase for the opensource scrcpy
+A Windows-based user interfase wrapper for the opensource [scrcpy](https://github.com/Genymobile/scrcpy).
+
+# Requisites
+adb
+scrcpy
