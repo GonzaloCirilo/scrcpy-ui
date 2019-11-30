@@ -16,15 +16,17 @@ namespace scrcpy_ui
         public Form1()
         {
             InitializeComponent();
+            UpdateDevices();
         }
 
-        private void btnSearchDevice_Click(object sender, EventArgs e)
+        private void UpdateDevices()
         {
-            deviceList.Items.Clear();
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("adb", "devices -l");
-            psi.UseShellExecute = false;
-            psi.RedirectStandardOutput = true;
-            psi.CreateNoWindow = true;
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("adb", "devices -l")
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
             var proc = System.Diagnostics.Process.Start(psi);
             string s = proc.StandardOutput.ReadToEnd();
@@ -39,14 +41,14 @@ namespace scrcpy_ui
 
             foreach (var ss in aux)
             {
-                if(ss != "" && ss != "\r")
+                if (ss != "" && ss != "\r")
                 {
                     var tkn = ss.Split(' ');
                     var realTkns = new List<String>();
 
-                    foreach(var r in tkn)
+                    foreach (var r in tkn)
                     {
-                        if(r != "")
+                        if (r != "")
                         {
                             realTkns.Add(r);
                         }
@@ -61,17 +63,25 @@ namespace scrcpy_ui
             }
 
             deviceList.DataSource = devices;
+        }
+
+        private void btnSearchDevice_Click(object sender, EventArgs e)
+        {
+            UpdateDevices();
 
         }
 
         private void btnView_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("scrcpy", "-s " + deviceList.SelectedValue);
-            psi.UseShellExecute = false;
-            psi.RedirectStandardOutput = true;
-            psi.CreateNoWindow = true;
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("scrcpy", "-s " + deviceList.SelectedValue)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
 
             System.Diagnostics.Process.Start(psi);
         }
+
     }
 }
