@@ -80,7 +80,7 @@ namespace scrcpy_ui
 
         private void btnView_Click(object sender, EventArgs e)
         {
-            // execute command 'scrcpy -s *selected device serial number*
+            // execute command 'scrcpy -s *selected device serial number*'
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("scrcpy", "-s " + deviceList.SelectedValue)
             {
                 UseShellExecute = false,
