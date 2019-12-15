@@ -21,24 +21,30 @@ namespace scrcpy_ui
 
         private void UpdateDevices()
         {
+            // execute command 'adb devices -l'
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("adb", "devices -l")
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
             };
-
+            
+            
             var proc = System.Diagnostics.Process.Start(psi);
+            // Get command result from stdout 
             string s = proc.StandardOutput.ReadToEnd();
 
+            // process the result from command to get model and serial number
             var res = s.Split('\n');
+            // Elminating the first line since its a header
             var aux = res.Reverse().Take(res.Count() - 1);
 
             deviceList.DisplayMember = "Model";
             deviceList.ValueMember = "SerialNumber";
 
             List<Device> devices = new List<Device>();
-
+            
+            // Iterate for each device found
             foreach (var ss in aux)
             {
                 if (ss != "" && ss != "\r")
@@ -62,6 +68,7 @@ namespace scrcpy_ui
                 }
             }
 
+            // Add devices to datasource
             deviceList.DataSource = devices;
         }
 
@@ -73,6 +80,7 @@ namespace scrcpy_ui
 
         private void btnView_Click(object sender, EventArgs e)
         {
+            // execute command 'scrcpy -s *selected device serial number*
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("scrcpy", "-s " + deviceList.SelectedValue)
             {
                 UseShellExecute = false,
