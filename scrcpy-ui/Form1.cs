@@ -5,9 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using System.Management;
+using System.Runtime.InteropServices;
 using scrcpy_ui.Entity;
+using scrcpy_ui.Service;
 
 namespace scrcpy_ui
 {
@@ -17,6 +20,25 @@ namespace scrcpy_ui
         {
             InitializeComponent();
             UpdateDevices();
+            UsbNotification.RegisterUsbDeviceNotification(this.Handle);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if(m.Msg == UsbNotification.WmDevicechange)
+            {
+                switch ((int)m.WParam)
+                {
+                    case UsbNotification.DbtDevicearrival:
+                        Thread.Sleep(1000);
+                        UpdateDevices();
+                        break;
+                    case UsbNotification.DbtDeviceremovecomplete:
+                        UpdateDevices();
+                        break;
+                }
+            }
         }
 
         private void UpdateDevices()

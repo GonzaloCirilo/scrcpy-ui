@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Management" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Form1.resx">
       <DependentUpon>Form1.csx  </DependentUpon>
       
